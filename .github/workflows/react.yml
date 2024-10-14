@@ -1,0 +1,58 @@
+name: React Native CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x] # A versão do Node.js que o projeto utiliza
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: yarn install # Ou `npm install` se usar npm
+
+      - name: Run tests
+        run: yarn test # Substitua pelo seu comando de testes
+
+      - name: Install Android SDK (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y openjdk-11-jdk wget
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
+          unzip cmdline-tools.zip
+          sudo mkdir -p /usr/lib/android-sdk/cmdline-tools
+          sudo mv cmdline-tools /usr/lib/android-sdk/cmdline-tools/latest
+          echo 'export ANDROID_HOME=/usr/lib/android-sdk' >> $GITHUB_ENV
+          echo 'export PATH=$PATH:/usr/lib/android-sdk/cmdline-tools/latest/bin' >> $GITHUB_ENV
+          echo 'export PATH=$PATH:/usr/lib/android-sdk/platform-tools' >> $GITHUB_ENV
+          sdkmanager --install "platforms;android-30" "build-tools;30.0.2" "platform-tools"
+      
+      - name: Build Android
+        run: cd android && ./gradlew assembleDebug
+
+      # Para builds iOS, se estiver em runners macOS
+      - name: Build iOS
+        if: runner.os == 'macOS'
+        run: |
+          cd ios
+          pod install
+          xcodebuild -workspace YourProject.xcworkspace -scheme YourProject -sdk iphonesimulator -configuration Debug build
+
