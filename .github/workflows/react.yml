@@ -25,6 +25,9 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: Navigate to frontend
+        run: cd frontend
+
       - name: Install dependencies
         run: npm install # Ou `npm install` se usar npm
 
