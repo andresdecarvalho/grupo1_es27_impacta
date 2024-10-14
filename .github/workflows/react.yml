@@ -25,8 +25,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: Navigate to frontend
-        run: cd frontend
+      - name: Navigate to app/leituranovagao directory
+        run: cd app/leituranovagao
 
       - name: Install dependencies
         run: npm install # Ou `npm install` se usar npm
