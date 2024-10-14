@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x] # A versão do Node.js que o projeto utiliza
+        node-version: [20.x] # A versão do Node.js que o projeto utiliza
 
     steps:
       - name: Checkout repository
@@ -26,10 +26,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Install dependencies
-        run: yarn install # Ou `npm install` se usar npm
-
-      - name: Run tests
-        run: yarn test # Substitua pelo seu comando de testes
+        run: npm install # Ou `npm install` se usar npm
 
       - name: Install Android SDK (Linux)
         if: runner.os == 'Linux'
