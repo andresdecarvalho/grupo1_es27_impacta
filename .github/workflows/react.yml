@@ -25,14 +25,11 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: List root directory contents
+      - name: List root directory contents (for debugging)
         run: ls -la
 
-      - name: List app directory contents
-        run: ls -la APP
-
       - name: Navigate to app/leituranovagao directory
-        run: cd APP/leitura-no-vagao
+        run: cd APP/leitura-no-vagao/
 
       - name: Install dependencies
         run: npm install # Ou `npm install` se usar npm
