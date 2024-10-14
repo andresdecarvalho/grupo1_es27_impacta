@@ -25,20 +25,17 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name: List root directory contents (for debugging)
+      - name: List all files in repository (for debugging)
         run: ls -la
 
-      - name: List app directory contents (for debugging)
-        run: ls -la app
-
-      - name: Navigate to app/leituranovagao directory
-        working-directory: APP/leituranovagao
+      - name: Navigate to APP/leitura-no-vagao directory
+        working-directory: APP/leitura-no-vagao
         run: |
-          ls -la # Confirmar que estamos no diretório correto
+          ls -la # Verifique que estamos no diretório correto
           npm install
 
       - name: Run tests
-        working-directory: APP/leituranovagao
+        working-directory: APP/leitura-no-vagao
         run: npm test
 
       - name: Install dependencies
