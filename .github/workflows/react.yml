@@ -25,6 +25,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: List root directory contents
+        run: ls -la
+
+      - name: List app directory contents
+        run: ls -la app
+
       - name: Navigate to app/leituranovagao directory
         run: cd app/leituranovagao
 
