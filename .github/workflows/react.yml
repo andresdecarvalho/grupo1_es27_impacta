@@ -28,8 +28,18 @@ jobs:
       - name: List root directory contents (for debugging)
         run: ls -la
 
+      - name: List app directory contents (for debugging)
+        run: ls -la app
+
       - name: Navigate to app/leituranovagao directory
-        run: cd APP/leitura-no-vagao/
+        working-directory: APP/leituranovagao
+        run: |
+          ls -la # Confirmar que estamos no diretório correto
+          npm install
+
+      - name: Run tests
+        working-directory: APP/leituranovagao
+        run: npm test
 
       - name: Install dependencies
         run: npm install # Ou `npm install` se usar npm
