@@ -14,7 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [20.x] # A versão do Node.js que o projeto utiliza
+        node-version: [20.x]
 
     steps:
       - name: Checkout repository
@@ -31,7 +31,7 @@ jobs:
       - name: Navigate to the APP/leitura-no-vagao directory and install dependencies
         run: |
           cd APP/leitura-no-vagao
-          ls -la # Verificar que estamos no diretório correto
+          ls -la
           npm install
 
       - name: Install Android SDK (Linux)
@@ -50,7 +50,10 @@ jobs:
           echo 'ANDROID_HOME=/usr/lib/android-sdk' >> $GITHUB_ENV
           echo 'PATH=$PATH:/usr/lib/android-sdk/cmdline-tools/latest/bin' >> $GITHUB_ENV
           echo 'PATH=$PATH:/usr/lib/android-sdk/platform-tools' >> $GITHUB_ENV
-          
+
+          # Atualizar SDK Manager
+          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --update
+
           # Usar o caminho completo para o sdkmanager
           /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
 
