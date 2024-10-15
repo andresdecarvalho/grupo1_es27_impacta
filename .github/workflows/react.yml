@@ -43,10 +43,26 @@ jobs:
         run: |
           # Download Command Line Tools
           wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
-          mkdir -p cmdline-tools
-          unzip cmdline-tools.zip -d cmdline-tools
+          
+          # Criar diretório temporário para extração
+          mkdir -p cmdline-tools-temp
+
+          # Extrair as ferramentas de linha de comando para o diretório temporário
+          unzip cmdline-tools.zip -d cmdline-tools-temp
+
+          # Listar arquivos para verificar a estrutura após a extração
+          echo "Conteúdo do diretório cmdline-tools-temp após extração:"
+          ls -la cmdline-tools-temp
+
+          # Criar o diretório do SDK se não existir
           sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
-          sudo mv cmdline-tools/cmdline-tools /usr/lib/android-sdk/cmdline-tools/latest
+
+          # Mover o conteúdo extraído para o diretório do SDK
+          sudo mv cmdline-tools-temp/cmdline-tools/* /usr/lib/android-sdk/cmdline-tools/latest/
+
+          # Listar o conteúdo do diretório cmdline-tools/latest para verificar a estrutura
+          echo "Conteúdo do diretório cmdline-tools/latest após movimentação:"
+          ls -la /usr/lib/android-sdk/cmdline-tools/latest/
 
       - name: Set Environment Variables
         run: |
@@ -57,6 +73,7 @@ jobs:
       - name: Verify sdkmanager Installation
         run: |
           echo "Verificando versão do sdkmanager:"
+          ls -la /usr/lib/android-sdk/cmdline-tools/latest/bin # Listar o conteúdo do diretório bin para depuração
           /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
 
       - name: Accept Android SDK licenses
