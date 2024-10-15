@@ -39,58 +39,26 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
-          
-          # Baixar as ferramentas de linha de comando
-          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
-          
-          # Criar um diretório temporário para extração
-          mkdir -p cmdline-tools-temp
 
-          # Extrair as ferramentas de linha de comando para o diretório temporário
-          unzip cmdline-tools.zip -d cmdline-tools-temp
-
-          # Listar arquivos para verificar a estrutura após a extração
-          echo "Conteúdo do diretório cmdline-tools-temp após extração:"
-          ls -la cmdline-tools-temp
-
-          # Verificar a estrutura e listar conteúdo
-          if [ -d "cmdline-tools-temp/cmdline-tools" ]; then
-              echo "Diretório cmdline-tools existe."
-          else
-              echo "Diretório cmdline-tools não encontrado. Conteúdo de cmdline-tools-temp:"
-              ls -la cmdline-tools-temp
-              exit 1
-          fi
-
-          # Criar diretório do SDK se não existir
-          sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
-          
-          # Mover o conteúdo extraído para o diretório do SDK
-          sudo mv cmdline-tools-temp/cmdline-tools /usr/lib/android-sdk/cmdline-tools/latest
-          
-          # Listar arquivos do diretório latest
-          echo "Conteúdo do diretório cmdline-tools/latest:"
-          ls -la /usr/lib/android-sdk/cmdline-tools/latest
-
-          # Listar arquivos do binário para ver se sdkmanager está presente
-          echo "Conteúdo do diretório bin:"
-          ls -la /usr/lib/android-sdk/cmdline-tools/latest/bin
+          # Instalar o Android SDK
+          sudo apt-get install -y android-sdk
 
           # Configurar variáveis de ambiente
           echo 'ANDROID_HOME=/usr/lib/android-sdk' >> $GITHUB_ENV
-          echo 'PATH=$PATH:/usr/lib/android-sdk/cmdline-tools/latest/bin' >> $GITHUB_ENV
-          echo 'PATH=$PATH:/usr/lib/android-sdk/platform-tools' >> $GITHUB_ENV
+          echo 'PATH=$PATH:$ANDROID_HOME/tools/bin' >> $GITHUB_ENV
+          echo 'PATH=$PATH:$ANDROID_HOME/platform-tools' >> $GITHUB_ENV
 
-          # Usar o caminho completo para o sdkmanager
-          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
+          # Listar sdkmanager para confirmar instalação
+          echo "Verificando versão do sdkmanager:"
+          sdkmanager --version
 
       - name: Accept Android SDK licenses
         run: |
-          yes | /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+          yes | sdkmanager --licenses
 
       - name: Install SDK packages
         run: |
-          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.2" "platform-tools"
+          sdkmanager "platforms;android-30" "build-tools;30.0.2" "platform-tools"
 
       - name: Build Android
         run: cd APP/leitura-no-vagao/android && ./gradlew assembleDebug
