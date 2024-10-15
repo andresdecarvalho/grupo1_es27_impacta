@@ -24,14 +24,14 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-
+          
       - name: List all files in repository (for debugging)
         run: ls -la
 
       - name: Navigate to APP/leitura-no-vagao directory
         working-directory: APP/leitura-no-vagao
         run: |
-          ls -la # Verifique que estamos no diretório correto
+          ls -la # Verificar que estamos no diretório correto
           npm install
 
       - name: Run tests
