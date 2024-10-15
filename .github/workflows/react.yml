@@ -49,9 +49,17 @@ jobs:
           # Extrair as ferramentas de linha de comando para o diretório temporário
           unzip cmdline-tools.zip -d cmdline-tools-temp
 
-          # Listar arquivos para verificar se a extração foi bem-sucedida
+          # Listar arquivos para verificar a estrutura após a extração
           echo "Conteúdo do diretório cmdline-tools-temp após extração:"
           ls -la cmdline-tools-temp
+
+          # Verificar se a pasta cmdline-tools foi criada corretamente
+          if [ -d "cmdline-tools-temp/cmdline-tools" ]; then
+              echo "Diretório cmdline-tools existe."
+          else
+              echo "Diretório cmdline-tools não encontrado. Verifique a extração."
+              exit 1
+          fi
 
           # Criar diretório do SDK se não existir
           sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
