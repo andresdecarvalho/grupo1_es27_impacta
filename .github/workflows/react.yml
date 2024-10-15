@@ -43,18 +43,24 @@ jobs:
           unzip cmdline-tools.zip
           sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
           sudo mv cmdline-tools /usr/lib/android-sdk/cmdline-tools/latest
+
+          # Listar arquivos para verificar se o sdkmanager está no caminho correto
+          ls -la /usr/lib/android-sdk/cmdline-tools/latest/bin
+
           echo 'ANDROID_HOME=/usr/lib/android-sdk' >> $GITHUB_ENV
           echo 'PATH=$PATH:/usr/lib/android-sdk/cmdline-tools/latest/bin' >> $GITHUB_ENV
           echo 'PATH=$PATH:/usr/lib/android-sdk/platform-tools' >> $GITHUB_ENV
           
           # Usar o caminho completo para o sdkmanager
-          yes | /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
 
       - name: Accept Android SDK licenses
-        run: yes | /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+        run: |
+          yes | /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Install SDK packages
-        run: /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.2" "platform-tools"
+        run: |
+          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.2" "platform-tools"
 
       - name: Build Android
         run: cd APP/leitura-no-vagao/android && ./gradlew assembleDebug
