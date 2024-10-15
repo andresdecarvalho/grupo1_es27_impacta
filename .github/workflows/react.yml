@@ -46,13 +46,18 @@ jobs:
           sudo apt-get install -y openjdk-11-jdk wget
           wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
           unzip cmdline-tools.zip
-          sudo mkdir -p /usr/lib/android-sdk/cmdline-tools
+          sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
           sudo mv cmdline-tools /usr/lib/android-sdk/cmdline-tools/latest
           echo 'export ANDROID_HOME=/usr/lib/android-sdk' >> $GITHUB_ENV
           echo 'export PATH=$PATH:/usr/lib/android-sdk/cmdline-tools/latest/bin' >> $GITHUB_ENV
           echo 'export PATH=$PATH:/usr/lib/android-sdk/platform-tools' >> $GITHUB_ENV
-          sdkmanager --install "platforms;android-30" "build-tools;30.0.2" "platform-tools"
       
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses
+      
+      - name: Install SDK packages
+        run: sdkmanager "platforms;android-30" "build-tools;30.0.2" "platform-tools"
+ 
       - name: Build Android
         run: cd android && ./gradlew assembleDebug
 
