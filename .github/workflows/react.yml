@@ -69,16 +69,19 @@ jobs:
       - name: Accept Android SDK licenses
         run: |
           echo "Aceitando as licenças do Android SDK..."
-          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses || echo "Falha ao aceitar as licenças!"
+          bash -c "/usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses" || echo "Falha ao aceitar as licenças!"
 
       - name: Install SDK packages
         run: |
-          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.2" "platform-tools"
+          echo "Instalando pacotes do SDK..."
+          bash -c "/usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager 'platforms;android-30' 'build-tools;30.0.2' 'platform-tools'" || echo "Falha ao instalar pacotes!"
 
       - name: Build Android
-        run: cd APP/leitura-no-vagao/android && ./gradlew assembleDebug
-      
+        run: |
+          cd APP/leitura-no-vagao/android
+          bash -c "./gradlew assembleDebug" || echo "Falha na construção do Android!"
+
       - name: Run tests
         run: |
           cd APP/leitura-no-vagao
-          npm test
+          bash -c "npm test" || echo "Falha ao executar os testes!"
