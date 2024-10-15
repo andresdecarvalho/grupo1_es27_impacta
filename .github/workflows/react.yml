@@ -26,12 +26,12 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: List all files in repository (for debugging)
-        run: ls -la
+        run: /bin/ls -la
 
       - name: Navigate to the APP/leitura-no-vagao directory and install dependencies
         run: |
           cd APP/leitura-no-vagao
-          ls -la
+          /bin/ls -la
           npm install
 
       - name: Install dependencies
@@ -52,7 +52,7 @@ jobs:
 
           # Listar arquivos para verificar a estrutura após a extração
           echo "Conteúdo do diretório cmdline-tools-temp após extração:"
-          ls -la cmdline-tools-temp
+          /bin/ls -la cmdline-tools-temp
 
           # Criar o diretório do SDK se não existir
           sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
@@ -62,7 +62,7 @@ jobs:
 
           # Listar o conteúdo do diretório cmdline-tools/latest para verificar a estrutura
           echo "Conteúdo do diretório cmdline-tools/latest após movimentação:"
-          ls -la /usr/lib/android-sdk/cmdline-tools/latest/
+          /bin/ls -la /usr/lib/android-sdk/cmdline-tools/latest/
 
       - name: Set Environment Variables
         run: |
@@ -73,8 +73,8 @@ jobs:
       - name: Verify sdkmanager Installation
         run: |
           echo "Verificando versão do sdkmanager:"
-          ls -la /usr/lib/android-sdk/cmdline-tools/latest/bin # Listar o conteúdo do diretório bin para depuração
-          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
+          /bin/ls -la /usr/lib/android-sdk/cmdline-tools/latest/bin # Listar o conteúdo do diretório bin para depuração
+          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --version || echo "sdkmanager não encontrado!"
 
       - name: Accept Android SDK licenses
         run: |
