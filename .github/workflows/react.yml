@@ -34,31 +34,38 @@ jobs:
           ls -la
           npm install
 
-      - name: Install Android SDK (Linux)
-        if: runner.os == 'Linux'
+      - name: Install dependencies
         run: |
           sudo apt-get update
           sudo apt-get install -y openjdk-11-jdk wget unzip
 
-          # Instalar o Android SDK
-          sudo apt-get install -y android-sdk
+      - name: Download Android SDK Command Line Tools
+        run: |
+          # Download Command Line Tools
+          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
+          mkdir -p cmdline-tools
+          unzip cmdline-tools.zip -d cmdline-tools
+          sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
+          sudo mv cmdline-tools/cmdline-tools /usr/lib/android-sdk/cmdline-tools/latest
 
-          # Configurar variáveis de ambiente
+      - name: Set Environment Variables
+        run: |
           echo 'ANDROID_HOME=/usr/lib/android-sdk' >> $GITHUB_ENV
-          echo 'PATH=$PATH:$ANDROID_HOME/tools/bin' >> $GITHUB_ENV
-          echo 'PATH=$PATH:$ANDROID_HOME/platform-tools' >> $GITHUB_ENV
+          echo 'PATH=$PATH:/usr/lib/android-sdk/cmdline-tools/latest/bin' >> $GITHUB_ENV
+          echo 'PATH=$PATH:/usr/lib/android-sdk/platform-tools' >> $GITHUB_ENV
 
-          # Listar sdkmanager para confirmar instalação
+      - name: Verify sdkmanager Installation
+        run: |
           echo "Verificando versão do sdkmanager:"
-          sdkmanager --version
+          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --version
 
       - name: Accept Android SDK licenses
         run: |
-          yes | sdkmanager --licenses
+          yes | /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Install SDK packages
         run: |
-          sdkmanager "platforms;android-30" "build-tools;30.0.2" "platform-tools"
+          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.2" "platform-tools"
 
       - name: Build Android
         run: cd APP/leitura-no-vagao/android && ./gradlew assembleDebug
