@@ -36,7 +36,7 @@ jobs:
 
       - name: Run tests
         working-directory: APP/leitura-no-vagao
-        run: npm test
+        run: npm run unit-tests
 
       - name: Install dependencies
         run: npm install # Ou `npm install` se usar npm
