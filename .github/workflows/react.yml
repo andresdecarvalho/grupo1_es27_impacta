@@ -43,21 +43,21 @@ jobs:
           # Baixar as ferramentas de linha de comando
           wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
           
-          # Extrair as ferramentas de linha de comando
-          unzip cmdline-tools.zip -d cmdline-tools
+          # Extrair as ferramentas de linha de comando diretamente para o diretório desejado
+          sudo unzip cmdline-tools.zip -d /usr/lib/android-sdk/cmdline-tools
 
-          # Listar o conteúdo após a extração
+          # Listar arquivos para verificar se a extração foi bem-sucedida
           echo "Conteúdo do diretório cmdline-tools após extração:"
-          ls -la cmdline-tools
+          ls -la /usr/lib/android-sdk/cmdline-tools
 
-          # Criar diretório se não existir
+          # Criar diretório latest se não existir
           sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
           
-          # Mover as ferramentas extraídas
-          sudo mv cmdline-tools/cmdline-tools /usr/lib/android-sdk/cmdline-tools/latest
+          # Mover o conteúdo extraído para o diretório latest
+          sudo mv /usr/lib/android-sdk/cmdline-tools/cmdline-tools /usr/lib/android-sdk/cmdline-tools/latest
           
-          # Listar arquivos para verificar se a movimentação foi bem-sucedida
-          echo "Conteúdo do diretório cmdline-tools/latest após movimentação:"
+          # Listar arquivos do diretório latest
+          echo "Conteúdo do diretório cmdline-tools/latest:"
           ls -la /usr/lib/android-sdk/cmdline-tools/latest
 
           # Listar arquivos do binário para ver se sdkmanager está presente
