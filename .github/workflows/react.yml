@@ -28,19 +28,17 @@ jobs:
       - name: List all files in repository (for debugging)
         run: ls -la
 
-      - name: Navigate to APP/leitura-no-vagao directory
-        working-directory: APP/leitura-no-vagao
+      - name: Navigate to the APP/leitura-no-vagao directory and install dependencies
         run: |
+          cd APP/leitura-no-vagao
           ls -la # Verificar que estamos no diretório correto
           npm install
 
       - name: Run tests
-        working-directory: APP/leitura-no-vagao
-        run: npm test
-
-      - name: Install dependencies
-        run: npm install # Ou `npm install` se usar npm
-
+        run: |
+          cd APP/leitura-no-vagao
+          npm test
+          
       - name: Install Android SDK (Linux)
         if: runner.os == 'Linux'
         run: |
