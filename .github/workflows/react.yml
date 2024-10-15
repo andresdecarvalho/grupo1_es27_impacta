@@ -53,11 +53,12 @@ jobs:
           echo "Conteúdo do diretório cmdline-tools-temp após extração:"
           ls -la cmdline-tools-temp
 
-          # Verificar se a pasta cmdline-tools foi criada corretamente
+          # Verificar a estrutura e listar conteúdo
           if [ -d "cmdline-tools-temp/cmdline-tools" ]; then
               echo "Diretório cmdline-tools existe."
           else
-              echo "Diretório cmdline-tools não encontrado. Verifique a extração."
+              echo "Diretório cmdline-tools não encontrado. Conteúdo de cmdline-tools-temp:"
+              ls -la cmdline-tools-temp
               exit 1
           fi
 
