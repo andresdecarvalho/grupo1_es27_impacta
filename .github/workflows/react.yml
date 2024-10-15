@@ -34,53 +34,6 @@ jobs:
           /bin/ls -la
           npm install
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y openjdk-11-jdk wget unzip
-
-      - name: Download Android SDK Command Line Tools
-        run: |
-          wget https://dl.google.com/android/repository/commandlinetools-linux-8512546_latest.zip -O cmdline-tools.zip
-          mkdir -p cmdline-tools-temp
-          unzip cmdline-tools.zip -d cmdline-tools-temp
-
-          echo "Conteúdo do diretório cmdline-tools-temp após extração:"
-          /bin/ls -la cmdline-tools-temp
-
-          sudo mkdir -p /usr/lib/android-sdk/cmdline-tools/latest
-          sudo mv cmdline-tools-temp/cmdline-tools/* /usr/lib/android-sdk/cmdline-tools/latest/
-
-          echo "Conteúdo do diretório cmdline-tools/latest após movimentação:"
-          /bin/ls -la /usr/lib/android-sdk/cmdline-tools/latest/
-
-      - name: Set Environment Variables
-        run: |
-          echo 'ANDROID_HOME=/usr/lib/android-sdk' >> $GITHUB_ENV
-          echo 'PATH=/usr/lib/android-sdk/cmdline-tools/latest/bin:$PATH' >> $GITHUB_ENV
-          echo 'PATH=/usr/lib/android-sdk/platform-tools:$PATH' >> $GITHUB_ENV
-
-      - name: Verify sdkmanager Installation
-        run: |
-          echo "Verificando versão do sdkmanager:"
-          /bin/ls -la /usr/lib/android-sdk/cmdline-tools/latest/bin
-          /usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --version || echo "sdkmanager não encontrado!"
-
-      - name: Accept Android SDK licenses
-        run: |
-          echo "Aceitando as licenças do Android SDK..."
-          bash -c "/usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses" || echo "Falha ao aceitar as licenças!"
-
-      - name: Install SDK packages
-        run: |
-          echo "Instalando pacotes do SDK..."
-          bash -c "/usr/lib/android-sdk/cmdline-tools/latest/bin/sdkmanager 'platforms;android-30' 'build-tools;30.0.2' 'platform-tools'" || echo "Falha ao instalar pacotes!"
-
-      - name: Build Android
-        run: |
-          cd APP/leitura-no-vagao/android
-          bash -c "./gradlew assembleDebug" || echo "Falha na construção do Android!"
-
       - name: Run tests
         run: |
           cd APP/leitura-no-vagao
